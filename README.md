@@ -1,2 +1,2 @@
-# Cryptocurrency-Creation
-Cryptocurrency - Blockchain
+# Cryptocurrency Creation
+
