@@ -21,6 +21,9 @@ class Blockchain:
         #'0' in single quote as SHA-256 accepts only encoded strings
         self.create_block(proof = 1, previous_hash = '0')
         
+        #nodes will be set
+        self.nodes = set()
+        
     
     #this will create block once it is mined
     def create_block(self, proof, previous_hash):
@@ -29,8 +32,8 @@ class Blockchain:
         block = { 'index' : len(self.chain)+1 ,
                   'timestamp' : str(datetime.datetime.now()),
                   'proof' : proof,
-                   'previous_hash' : previous_hash,
-                   'transactions' : self.transactions
+                  'previous_hash' : previous_hash,
+                  'transactions' : self.transactions
                  }
         
         #once transactions are appended, transaction list will again come back to empty
@@ -100,6 +103,14 @@ class Blockchain:
         #this transaction must be added to next block, so getting previous block index
         previous_block = self.get_previous_block()
         return previous_block['index'] + 1
+    
+    
+    def add_node(self,address):
+        '''method that helps to add node'''
+        parsed_url = urlparse(address)
+        
+        #after parsing the url, .netloc will give you the ip address
+        self.nodes.add(parsed_url.netloc)
     
     
     
