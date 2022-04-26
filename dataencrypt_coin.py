@@ -111,7 +111,34 @@ class Blockchain:
         
         #after parsing the url, .netloc will give you the ip address
         self.nodes.add(parsed_url.netloc)
-    
+        
+        
+    def replace_chain(self):
+        #containing all nodes
+        network = self.nodes
+        
+        longest_chain = None
+        
+        #length of the longest chain
+        max_length = len(self.chain)
+        
+        for node in network:
+            #get 127.0.0.1:5000,5001 (all nodes)
+            response = requests.get(f'http://(node)/get_chain')
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+                
+                #assigning the longest chain from the longest length
+                if length > max_length and self.is_chain_valid(chain):
+                    max_length = length
+                    longest_chain = chain
+            
+        if longest_chain:
+            #if longest chain is not None, then we will replace chain and return True
+            self.chain = longest_chain
+            return True
+        return False
     
     
 # Mining our Blockchain
