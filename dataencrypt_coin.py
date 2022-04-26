@@ -220,6 +220,29 @@ def add_transaction():
     return jsonify(response), 201
 
 
+
+#Decentralizing our blockchain
+
+#Connecting new nodes
+@app.route('/connect_node', methods = ['POST'])
+def connect_node():
+    #get json file posted in postman
+    json = request.get_json()
+
+    nodes = json.get('nodes')
+    
+    if nodes is None:
+        return 'No node', 400
+    
+    for node in nodes:
+        blockchain.add_node(node)
+        
+    response = {'message': 'All the nodes are now connected. The Dataencrypt coin Blockchain now contains the following nodes,',
+                'total_nodes': list(blockchain.nodes)}
+    
+    return jsonify(response), 201
+
+
 ## Running the app
 app.run(port = 5000)
 
