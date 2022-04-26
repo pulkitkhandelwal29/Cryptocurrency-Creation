@@ -202,6 +202,24 @@ def is_valid():
     return jsonify(response), 200
 
 
+# Adding a new transaction to the blockchain
+@app.route('/add_transaction', methods = ['POST'])
+def add_transaction():
+    #get json file posted in postman
+    json = request.get_json()
+    #3 keys of transaction
+    transaction_keys = ['sender','receiver','amount']
+
+    if not all (key in json for keys in transaction_keys):
+        return 'Some elements of the transaction are missing',400 #400 is for Bad Request code
+    
+    index = blockchain.add_transaction(json['sender'],json['receiver'],json['amount'])
+    
+    response = {'message': f'This transaction will be added to Block {index}'}
+    
+    return jsonify(response), 201
+
+
 ## Running the app
 app.run(port = 5000)
 
